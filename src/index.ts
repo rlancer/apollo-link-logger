@@ -1,10 +1,13 @@
-/* eslint-disable import/no-unresolved,import/extensions */
-import { ApolloLink } from 'apollo-link';
-import formatMessage from './formatMessage';
-import logging from './logging';
+import { ApolloLink } from "apollo-link";
+import formatMessage from "./formatMessage";
+import logging from "./logging";
 
 const loggerLink = new ApolloLink((operation, forward) => {
   const startTime = new Date().getTime();
+
+  if (!forward) {
+    return null;
+  }
 
   return forward(operation).map(result => {
     const operationType = operation.query.definitions[0].operation;
@@ -14,8 +17,8 @@ const loggerLink = new ApolloLink((operation, forward) => {
 
     logging.groupCollapsed(...group);
 
-    logging.log('INIT', operation);
-    logging.log('RESULT', result);
+    logging.log("INIT", operation);
+    logging.log("RESULT", result);
 
     logging.groupEnd(...group);
     return result;

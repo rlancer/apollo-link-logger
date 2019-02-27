@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const bindToConsole = (consoleMethod, polyfill) => {
   return consoleMethod ? consoleMethod.bind(console) : polyfill;
 };
