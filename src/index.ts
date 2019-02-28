@@ -9,9 +9,12 @@ const loggerLink = new ApolloLink((operation, forward) => {
     return null;
   }
 
+  const onServer = typeof window === "undefined";
+
   return forward(operation).map(result => {
     const operationType = operation.query.definitions[0].operation;
     const ellapsed = new Date().getTime() - startTime;
+
 
     const group = formatMessage(operationType, operation, ellapsed);
 
@@ -21,6 +24,7 @@ const loggerLink = new ApolloLink((operation, forward) => {
     logging.log("RESULT", result);
 
     logging.groupEnd(...group);
+
     return result;
   });
 });
